@@ -1,4 +1,7 @@
+#include <array>
+#include <vector>
 #include <iostream>
+#include <utility>
 
 #include "grid.hpp"
 
@@ -61,4 +64,70 @@ void Grid::humanMove()
         std::cout << "Intenta de nuevo." << std::endl;
         humanMove();
     }
+}
+
+int Grid::heuristic() const 
+{
+    int h = 0;
+
+    for (int i = 0; i < _size; ++i)
+    {
+        for (int j = 0; j < _size; ++j)
+        {
+            int value = _grid[i][j];
+            
+            if (value != 0)
+            {
+                int target_x = (value - 1) / _size;
+                int target_y = (value - 1) % _size;
+                h += abs(i - target_x) + abs(j - target_y);
+            }
+        }   
+    }    
+
+    return h;
+}
+
+std::vector<Grid> Grid::neighbors() const 
+{
+    std::vector<Grid> result;
+
+    // Usar std::vector para evitar problemas de inicialización
+    const std::vector<std::pair<int, int>> deltas = {
+        { -1, 0 },
+        { 1, 0 },
+        { 0, -1 },
+        { 0, 1 }
+    };
+
+    for (const auto& delta : deltas) 
+    {
+        int new_x = _x + delta.first;
+        int new_y = _y + delta.second;
+
+        if (new_x >= 0 && new_x < _size && new_y >= 0 && new_y < _size) 
+        {
+            Grid neighbor = *this; // Copia el estado actual
+            if (neighbor.move(new_x, new_y)) 
+                result.push_back(neighbor);
+        }
+    }
+
+    return result;
+}
+
+std::string Grid::serialize() const 
+{
+    std::string serialized;
+    
+    for (const auto& row : _grid) 
+        for (int cell : row) 
+            serialized += std::to_string(cell) + ",";
+    
+    return serialized;
+}
+
+bool Grid::operator < (const Grid& other) const 
+{
+    return this->heuristic() < other.heuristic();
 }

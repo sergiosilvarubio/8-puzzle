@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -136,7 +137,7 @@ void solvePuzzle(const vector<vector<int>>& start, const vector<vector<int>>& go
     cout << "No se encontró solución." << endl;
 }
 
-int main() {
+int maincito() {
     // Estado inicial del puzzle
     vector<vector<int>> start = {{1, 2, 3},
                                  {4, 0, 5},
@@ -152,3 +153,4 @@ int main() {
 
     return 0;
 }
+*/
