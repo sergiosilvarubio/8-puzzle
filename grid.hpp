@@ -20,9 +20,11 @@ class Grid
         bool isSolved();
         void humanMove();
 
-        //int g, h;  // g: costo del camino, h: heurística estimada
-        //Grid* parent; // Para rastrear el camino
+        int heuristic() const;
+        std::vector<Grid> neighbors() const;
+        std::string serialize() const;
 
+        bool operator < (const Grid& other) const;
 };
 
 #endif //GRID_HPP
